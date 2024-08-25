@@ -1,4 +1,4 @@
-package com.msayeh.githubusers.core.dto
+package com.msayeh.githubusers.features.search.data.dto
 
 import com.msayeh.githubusers.features.search.domain.entities.User
 

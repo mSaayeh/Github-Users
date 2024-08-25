@@ -5,8 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -26,28 +27,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GithubUsersTheme {
-                SharedTransitionLayout(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    val navController = rememberNavController()
+                val navController = rememberNavController()
 
-                    NavHost(navController = navController, startDestination = Route.Search.route) {
-                        composable(Route.Search.route) {
-                            SearchScreen(navController)
-                        }
-                        composable(
-                            Route.Profile.route,
-                            arguments = listOf(
-                                navArgument(Route.Profile.ARG_USERNAME) {
-                                    type = NavType.StringType
-                                    nullable = false
-                                },
-                            ),
-                        ) { backStackEntry ->
-                            val username =
-                                backStackEntry.arguments?.getString(Route.Profile.ARG_USERNAME)!!
-                            ProfileScreen(navController, username)
-                        }
+                NavHost(
+                    navController = navController,
+                    startDestination = Route.Search.route,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    composable(Route.Search.route) {
+                        SearchScreen(navController)
+                    }
+                    composable(
+                        Route.Profile.route,
+                        arguments = listOf(
+                            navArgument(Route.Profile.ARG_USERNAME) {
+                                type = NavType.StringType
+                                nullable = false
+                            },
+                        ),
+                    ) {
+                        ProfileScreen(navController)
                     }
                 }
             }
