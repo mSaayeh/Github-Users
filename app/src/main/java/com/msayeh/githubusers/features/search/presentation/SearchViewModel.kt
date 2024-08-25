@@ -14,12 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchUsersUsecase: SearchUsersUsecase): ViewModel() {
+class SearchViewModel @Inject constructor(private val searchUsersUsecase: SearchUsersUsecase) :
+    ViewModel() {
     private val _state = MutableStateFlow(SearchState())
     val state = _state.asStateFlow()
 
     fun onEvent(event: SearchEvent) {
-        when(event) {
+        when (event) {
             is SearchEvent.Search -> searchUsers()
             is SearchEvent.LoadMore -> loadMoreUsers()
             is SearchEvent.OnSearchQueryChanged -> onSearchQueryChanged(event.query)
@@ -53,7 +54,13 @@ class SearchViewModel @Inject constructor(private val searchUsersUsecase: Search
     }
 
     private fun loadMoreUsers() {
-        TODO("Not yet implemented")
+        _state.update {
+            it.copy(
+                currentPage = state.value.currentPage + 1
+            )
+        }
+        Log.d("SearchScreen", "Requesting page ${state.value.currentPage}")
+        fetchUsers(append = true)
     }
 
     private fun onSearchQueryChanged(query: String) {
@@ -65,46 +72,77 @@ class SearchViewModel @Inject constructor(private val searchUsersUsecase: Search
     }
 
     private fun searchUsers() {
-        Log.e("SearchViewModel", "searchUsers: ${state.value.query}")
+        if (state.value.query.isEmpty()) {
+            _state.update {
+                it.copy(
+                    users = emptyList(),
+                )
+            }
+            return
+        }
+        _state.update {
+            it.copy(
+                currentPage = 1
+            )
+        }
+        fetchUsers()
+    }
+
+    private fun fetchUsers(append: Boolean = false) {
+        if (state.value.searchedQuery == state.value.query && !append) {
+            return
+        }
+        _state.update {
+            it.copy(
+                searchedQuery = state.value.query
+            )
+        }
         viewModelScope.launch {
             searchUsersUsecase(state.value.query, state.value.currentPage).collect { resource ->
-                when(resource) {
+                when (resource) {
                     is Resource.Loading -> {
-                        Log.e("SearchViewModel", "Loading")
-                        _state.update {
-                            it.copy(
-                                isLoading = true,
-                                errorMessage = null
-                            )
+                        if (!append) {
+                            _state.update {
+                                it.copy(
+                                    isLoading = true, errorMessage = null,
+                                )
+                            }
                         }
                     }
+
                     is Resource.Error -> {
                         _state.update {
-                            Log.e("SearchViewModel", "Error")
                             it.copy(
                                 isLoading = false,
-                                errorMessage = resource.exception!!.localizedMessage
+                                errorMessage = if (append) null else resource.exception!!.localizedMessage
                             )
                         }
                     }
+
                     is Resource.Success -> {
-                        Log.e("SearchViewModel", "Success")
                         if (resource.data!!.isEmpty() && state.value.users.isEmpty()) {
                             _state.update {
                                 it.copy(
-                                    isLoading = false,
-                                    errorMessage = "No users found."
+                                    isLoading = false, errorMessage = "No users found."
                                 )
                             }
                         } else {
                             _state.update {
-                                it.copy(
-                                    users = resource.data,
-                                    isLoading = false,
-                                    errorMessage = null
-                                )
+                                if (append) {
+                                    it.copy(
+                                        users = state.value.users + resource.data,
+                                        isLoading = false,
+                                        errorMessage = null
+                                    )
+                                } else {
+                                    it.copy(
+                                        users = resource.data,
+                                        isLoading = false,
+                                        errorMessage = null
+                                    )
+                                }
                             }
-                            Log.e("SearchViewModel", "searchUsers: ${state.value.users}")
+                            Log.e("SearchViewModel", "fetched count: ${state.value.users.size}")
                         }
                     }
                 }

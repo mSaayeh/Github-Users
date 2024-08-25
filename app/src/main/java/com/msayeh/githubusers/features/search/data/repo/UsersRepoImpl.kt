@@ -10,10 +10,10 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 class UsersRepoImpl @Inject constructor(private val usersService: UsersService): UsersRepo {
-    override fun searchUsers(query: String, page: Int): Flow<Resource<List<User>>> = flow {
+    override fun searchUsers(query: String, page: Int, limit: Int): Flow<Resource<List<User>>> = flow {
         try {
             emit(Resource.Loading())
-            val response = usersService.searchUsers(query, page)
+            val response = usersService.searchUsers(query, page, limit)
             if (response.isSuccessful) {
                 emit(Resource.Success(response.body()!!.items))
             } else {

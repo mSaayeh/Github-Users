@@ -5,5 +5,5 @@ import com.msayeh.githubusers.features.search.domain.entities.User
 import kotlinx.coroutines.flow.Flow
 
 interface UsersRepo {
-    fun searchUsers(query: String, page: Int): Flow<Resource<List<User>>>
+    fun searchUsers(query: String, page: Int, limit: Int): Flow<Resource<List<User>>>
 }
