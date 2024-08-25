@@ -1,5 +1,7 @@
 package com.msayeh.githubusers.di
 
+import com.msayeh.githubusers.features.profile.data.repo.ProfileRepoImpl
+import com.msayeh.githubusers.features.profile.domain.repo.ProfileRepo
 import com.msayeh.githubusers.features.search.data.repo.UsersRepoImpl
 import com.msayeh.githubusers.features.search.domain.repo.UsersRepo
 import dagger.Binds
@@ -15,4 +17,8 @@ abstract class RepoModule {
     @Binds
     @ViewModelScoped
     abstract fun bindUsersRepo(usersRepoImpl: UsersRepoImpl): UsersRepo
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindProfileRepo(profileRepoImpl: ProfileRepoImpl): ProfileRepo
 }

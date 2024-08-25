@@ -1,6 +1,7 @@
 package com.msayeh.githubusers.di
 
 import com.msayeh.githubusers.BuildConfig
+import com.msayeh.githubusers.features.profile.data.datasource.ProfileService
 import com.msayeh.githubusers.features.search.data.datasource.UsersService
 import dagger.Module
 import dagger.Provides
@@ -43,4 +44,9 @@ object AppModule {
     @Singleton
     fun provideUsersService(retrofit: Retrofit): UsersService =
         retrofit.create(UsersService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileService(retrofit: Retrofit): ProfileService =
+        retrofit.create(ProfileService::class.java)
 }
