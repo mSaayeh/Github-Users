@@ -7,4 +7,7 @@ data class Repository(
     @SerializedName("html_url")
     val url: String,
     val description: String?,
+    val language: String?,
+    @SerializedName("stargazers_count")
+    val starsCount: Int,
 )
