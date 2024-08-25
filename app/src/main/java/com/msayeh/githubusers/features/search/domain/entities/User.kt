@@ -8,4 +8,5 @@ data class User(
     val username: String,
     @SerializedName("avatar_url")
     val avatarUrl: String,
+    val id: Long,
 )

@@ -4,5 +4,5 @@ import com.msayeh.githubusers.features.search.domain.repo.UsersRepo
 import javax.inject.Inject
 
 class SearchUsersUsecase @Inject constructor(private val usersRepo: UsersRepo) {
-    operator fun invoke(query: String, page: Int = 1) = usersRepo.searchUsers(query, page)
+    operator fun invoke(query: String, page: Int = 1, limit: Int = 20) = usersRepo.searchUsers(query, page, limit)
 }

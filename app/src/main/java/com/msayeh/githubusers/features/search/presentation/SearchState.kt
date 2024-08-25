@@ -4,6 +4,7 @@ import com.msayeh.githubusers.features.search.domain.entities.User
 
 data class SearchState(
     val query: String = "",
+    val searchedQuery: String = "",
     val users: List<User> = emptyList(),
     val isSearchVisible: Boolean = false,
     val clickedUsername: String? = null,

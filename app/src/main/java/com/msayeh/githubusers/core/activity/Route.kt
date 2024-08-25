@@ -5,6 +5,5 @@ sealed class Route(val route: String) {
 
     data object Profile : Route("profile/{username}") {
         fun createRoute(username: String): String = "profile/$username"
-        fun fromRoute(route: String): String = route.removePrefix("profile/")
     }
 }
