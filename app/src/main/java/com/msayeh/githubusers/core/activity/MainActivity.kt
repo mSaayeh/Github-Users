@@ -1,22 +1,18 @@
 package com.msayeh.githubusers.core.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.toRoute
 import com.msayeh.githubusers.core.theme.GithubUsersTheme
 import com.msayeh.githubusers.features.profile.presentation.ProfileScreen
 import com.msayeh.githubusers.features.search.presentation.SearchScreen
@@ -42,13 +38,14 @@ class MainActivity : ComponentActivity() {
                         composable(
                             Route.Profile.route,
                             arguments = listOf(
-                                navArgument("username") {
+                                navArgument(Route.Profile.ARG_USERNAME) {
                                     type = NavType.StringType
                                     nullable = false
                                 },
                             ),
                         ) { backStackEntry ->
-                            val username = backStackEntry.arguments?.getString("username")!!
+                            val username =
+                                backStackEntry.arguments?.getString(Route.Profile.ARG_USERNAME)!!
                             ProfileScreen(navController, username)
                         }
                     }
