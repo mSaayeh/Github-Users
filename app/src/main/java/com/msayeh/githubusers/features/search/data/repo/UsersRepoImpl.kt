@@ -15,7 +15,7 @@ class UsersRepoImpl @Inject constructor(private val usersService: UsersService):
             emit(Resource.Loading())
             val response = usersService.searchUsers(query, page)
             if (response.isSuccessful) {
-                emit(Resource.Success(response.body()!!))
+                emit(Resource.Success(response.body()!!.items))
             } else {
                 emit(Resource.Error(HttpException(response)))
             }
