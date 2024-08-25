@@ -17,7 +17,9 @@ import androidx.navigation.toRoute
 import com.msayeh.githubusers.core.theme.GithubUsersTheme
 import com.msayeh.githubusers.features.profile.presentation.ProfileScreen
 import com.msayeh.githubusers.features.search.presentation.SearchScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
