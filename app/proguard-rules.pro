@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.msayeh.githubusers.features.profile.domain.entities.** {
+  *;
+}
+
+-keep class com.msayeh.githubusers.features.search.domain.entities.** {
+  *;
+}
+
+-keep class com.msayeh.githubusers.features.search.data.dto.** {
+  *;
+}
